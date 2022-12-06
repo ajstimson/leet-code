@@ -9,9 +9,7 @@ var spiralOrder = function (matrix) {
     let left = 0
     let right = matrix[0].length - 1
     const size = matrix.length * matrix[0].length
-    console.log(size)
     while (results.length < size) {
-        console.log(results)
         // Top Row (l->r)
         for (let i = left; i <= right && results.length < size; i++) {
             results.push(matrix[top][i])
