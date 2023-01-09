@@ -1,19 +1,29 @@
-function longestPalindrome(s: string): string {
-    const isPalindrome = (s: string) => {
-        return Array.from(String(s)).reverse().join("") === s
-    }
-    for (let i = s.length; i > 0; i--) {
-        for (let j = 0; j < s.length; j++) {
-            if (j + i > s.length) {
-                break
-            }
-            const sub = s.substr(j, i)
-            if (isPalindrome(sub)) {
-                return sub
-            }
+function longestPalindrome(s: string) {
+    if (s.length < 1) return ""
+    let maxSubStart = 0
+    let maxSubLength = 0
+    for (let i = 0; i < s.length; i++) {
+        const lengthCenteredAtChar = expandAroundCenter(s, i, i)
+        const lengthCenteredAtSpace = expandAroundCenter(s, i, i + 1)
+        const longestSubAtChar = Math.max(
+            lengthCenteredAtChar,
+            lengthCenteredAtSpace
+        )
+        if (longestSubAtChar > maxSubLength) {
+            maxSubLength = longestSubAtChar
+            maxSubStart = i - Math.floor((maxSubLength - 1) / 2)
         }
     }
-    return ""
+    return s.substr(maxSubStart, maxSubLength)
 }
 
-console.log(longestPalindrome("babad"))
+function expandAroundCenter(s: string, left: number, right: number) {
+    while (left >= 0 && right < s.length && s[left] === s[right]) {
+        left--
+        right++
+    }
+    return right - left - 1
+}
+const string =
+    "zudfweormatjycujjirzjpyrmaxurectxrtqedmmgergwdvjmjtstdhcihacqnothgttgqfywcpgnuvwglvfiuxteopoyizgehkwuvvkqxbnufkcbodlhdmbqyghkojrgokpwdhtdrwmvdegwycecrgjvuexlguayzcammupgeskrvpthrmwqaqsdcgycdupykppiyhwzwcplivjnnvwhqkkxildtyjltklcokcrgqnnwzzeuqioyahqpuskkpbxhvzvqyhlegmoviogzwuiqahiouhnecjwysmtarjjdjqdrkljawzasriouuiqkcwwqsxifbndjmyprdozhwaoibpqrthpcjphgsfbeqrqqoqiqqdicvybzxhklehzzapbvcyleljawowluqgxxwlrymzojshlwkmzwpixgfjljkmwdtjeabgyrpbqyyykmoaqdambpkyyvukalbrzoyoufjqeftniddsfqnilxlplselqatdgjziphvrbokofvuerpsvqmzakbyzxtxvyanvjpfyvyiivqusfrsufjanmfibgrkwtiuoykiavpbqeyfsuteuxxjiyxvlvgmehycdvxdorpepmsinvmyzeqeiikajopqedyopirmhymozernxzaueljjrhcsofwyddkpnvcvzixdjknikyhzmstvbducjcoyoeoaqruuewclzqqqxzpgykrkygxnmlsrjudoaejxkipkgmcoqtxhelvsizgdwdyjwuumazxfstoaxeqqxoqezakdqjwpkrbldpcbbxexquqrznavcrprnydufsidakvrpuzgfisdxreldbqfizngtrilnbqboxwmwienlkmmiuifrvytukcqcpeqdwwucymgvyrektsnfijdcdoawbcwkkjkqwzffnuqituihjaklvthulmcjrhqcyzvekzqlxgddjoir"
+console.log(longestPalindrome(string))
